@@ -3,9 +3,11 @@ import numpy as np
 import cv2
 from keras.preprocessing.image import img_to_array
 from sklearn.preprocessing import LabelBinarizer
-from keras.preprocessing.image import ImageDataGenerator
+# from keras.preprocessing.image import ImageDataGenerator
+from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
  
-directory_root = '/Users/soranaaa/Documents/ubb/third-year-sem2/ai/plants'
+# directory_root = '/Users/soranaaa/Documents/ubb/third-year-sem2/ai/plants'
+directory_root = r'D:\Faculty materials\3rd year\2nd sem\AI in climate change\plants'
 default_image_size = (224, 224)  
 
 
@@ -73,7 +75,7 @@ def normalize_set_of_images(image_list):
     return np_image_list
 
 
-def get_label_binarizer():
+def get_label_binarizer(label_list):
     label_binarizer = LabelBinarizer()
     image_labels = label_binarizer.fit_transform(label_list)
     d = dict(enumerate(label_binarizer.classes_))
@@ -82,7 +84,7 @@ def get_label_binarizer():
 
 if __name__ == "__main__":
     image_list, label_list = extract_dataset()
-    labels_binarizer = get_label_binarizer()
+    labels_binarizer = get_label_binarizer(label_list)
 
-    image_labels_encoded, image_labels_classes = get_label_binarizer()
+    image_labels_encoded, image_labels_classes = get_label_binarizer(label_list)
     print(image_labels_classes)
