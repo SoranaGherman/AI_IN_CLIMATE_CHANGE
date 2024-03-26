@@ -50,8 +50,10 @@ def extract_dataset():
                 for image in plant_disease_image_list[:200]:
                     image_directory = f"{directory_root}/{plant_folder}/{plant_disease_folder}/{image}"
                     if image_directory.endswith(".jpg") == True or image_directory.endswith(".JPG") == True:
-                        image_list.append(convert_image_to_array(image_directory))
-                        label_list.append(plant_disease_folder)
+                        converted_image = convert_image_to_array(image_directory)
+                        if converted_image is not None:
+                            image_list.append(converted_image)
+                            label_list.append(plant_disease_folder)
 
         return image_list, label_list   
     

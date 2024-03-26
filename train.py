@@ -4,6 +4,8 @@ import tensorflow as tf
 from keras.layers import GlobalAveragePooling2D, Dense
 from keras.models import Model
 import matplotlib.pyplot as plt
+import math
+import numpy as np
 
 def split_train_test_dataset():
     print("[INFO] Spliting data to train, test")
@@ -22,6 +24,7 @@ def train():
     )
 
     x_train, x_test, y_train, y_test, n_classes = split_train_test_dataset()
+
 
     # Add a global spatial average pooling layer
     out = base_model.output
@@ -45,16 +48,11 @@ def train():
 
     # we train the model
 
-    steps_per_epoch = len(x_train) // batch_size
-    validation_steps = len(x_test) // batch_size
-
-
     history = model.fit(
         aug.flow(x_train, y_train, batch_size=batch_size),
         validation_data=(x_test, y_test),
-        steps_per_epoch=steps_per_epoch,
-        validation_steps=validation_steps,
-        epochs=epochs, verbose=1
+        epochs=epochs, 
+        verbose=1
     )
 
 
@@ -80,7 +78,7 @@ def train():
     plt.show()
 
     # we save the model 
-    model.save("/kaggle/working/plant_disease_15_class_mobilenet.h5")
+    model.save("plant_disease_15_class_mobilenet.keras")
 
 
 if __name__ == "__main__":
