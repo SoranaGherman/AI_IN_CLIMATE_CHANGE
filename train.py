@@ -1,6 +1,7 @@
-from process_dataset.get_dataset import extract_dataset, normalize_set_of_images, get_label_binarizer, augument_dataset
+from process_dataset.get_dataset import extract_dataset, normalize_set_of_images, get_label_binarizer, augument_dataset, convert_image_to_array, get_class_labels
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
+import keras
 from keras.layers import GlobalAveragePooling2D, Dense
 from keras.models import Model
 import matplotlib.pyplot as plt
@@ -82,4 +83,12 @@ def train():
 
 
 if __name__ == "__main__":
-    train()
+    # train()
+    loaded_model = keras.models.load_model('plant_disease_15_class_mobilenet.keras')
+    img = convert_image_to_array('pepper_bell_bacterial.JPG')
+    img_list = [img]
+    normalized = normalize_set_of_images(img_list)
+    # preprocessed_image = np.expand_dims(normalized, axis=0)
+    prediction = loaded_model.predict(normalized).argmax()
+    labels = get_class_labels()
+    print("Predicted class: " + labels[prediction])

@@ -3,13 +3,13 @@ import numpy as np
 import cv2
 from keras.preprocessing.image import img_to_array
 from sklearn.preprocessing import LabelBinarizer
-from keras.preprocessing.image import ImageDataGenerator
+# from keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 import seaborn as sns
-# from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
+from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
  
-directory_root = '/Users/soranaaa/Documents/ubb/third-year-sem2/ai/plants'
-# directory_root = r'D:\Faculty materials\3rd year\2nd sem\AI in climate change\plants'
+# directory_root = '/Users/soranaaa/Documents/ubb/third-year-sem2/ai/plants'
+directory_root = r'D:\Faculty materials\3rd year\2nd sem\AI in climate change\plants'
 default_image_size = (224, 224)  
 
 
@@ -98,10 +98,34 @@ def histogram(label_list):
     plt.show()
 
 
+def get_class_labels():
+    class_labels = []
+    try:
+        root_dir = listdir(directory_root)
+        for directory in root_dir:
+            # Check for hidden files like .DS_Store in MacOS and ignore them
+            if directory == ".DS_Store":
+                continue
+            
+            plant_disease_folder_list = listdir(f"{directory_root}/{directory}")
+            for disease_folder in plant_disease_folder_list:
+                # Again, check for hidden files
+                if disease_folder == ".DS_Store":
+                    continue
+                class_labels.append(disease_folder)
+    
+    except Exception as e:
+        print(f"Error : {e}")
+        class_labels = []  # Return an empty set in case of an error
+
+    return class_labels
+
 
 if __name__ == "__main__":
     image_list, label_list = extract_dataset()
     labels_binarizer = get_label_binarizer(label_list)
 
     image_labels_encoded, image_labels_classes = get_label_binarizer(label_list)
+    print(image_labels_encoded)
+    print(image_labels_classes)
     histogram(label_list)
