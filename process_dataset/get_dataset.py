@@ -3,11 +3,13 @@ import numpy as np
 import cv2
 from keras.preprocessing.image import img_to_array
 from sklearn.preprocessing import LabelBinarizer
-# from keras.preprocessing.image import ImageDataGenerator
-from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator
+import matplotlib.pyplot as plt
+import seaborn as sns
+# from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
  
-# directory_root = '/Users/soranaaa/Documents/ubb/third-year-sem2/ai/plants'
-directory_root = r'D:\Faculty materials\3rd year\2nd sem\AI in climate change\plants'
+directory_root = '/Users/soranaaa/Documents/ubb/third-year-sem2/ai/plants'
+# directory_root = r'D:\Faculty materials\3rd year\2nd sem\AI in climate change\plants'
 default_image_size = (224, 224)  
 
 
@@ -70,7 +72,7 @@ def augument_dataset():
 
 
 def normalize_set_of_images(image_list):
-    np_image_list = np.array(image_list, dtype=np.float16) / 225.0
+    np_image_list = np.array(image_list, dtype=np.float16) / 255.0
 
     return np_image_list
 
@@ -82,9 +84,22 @@ def get_label_binarizer(label_list):
     return image_labels, d
 
 
+def histogram(label_list):
+
+    labels = label_list
+
+    plt.figure(figsize=(10, 8))
+    sns.countplot(y=labels)
+    plt.title('Distribuția claselor în setul de date')
+    plt.xlabel('Numărul de imagini')
+    plt.ylabel('Clase')
+    plt.show()
+
+
+
 if __name__ == "__main__":
     image_list, label_list = extract_dataset()
     labels_binarizer = get_label_binarizer(label_list)
 
     image_labels_encoded, image_labels_classes = get_label_binarizer(label_list)
-    print(image_labels_classes)
+    histogram(label_list)
