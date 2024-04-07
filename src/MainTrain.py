@@ -6,7 +6,7 @@ from DataProcessor import extract_dataset, normalize_set_of_images, get_label_bi
 from sklearn.model_selection import train_test_split
 from keras.models import Model
 
-from ModelsBulder import build_alexnet, build_densetnet, build_mobilenet
+from src.ModelsBuilder import build_alexnet, build_densetnet, build_mobilenet
 
 
 MODELS_BASE_PATH = "../Models"
