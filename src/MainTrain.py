@@ -6,7 +6,7 @@ from DataProcessor import extract_dataset, normalize_set_of_images, get_label_bi
 from sklearn.model_selection import train_test_split
 from keras.models import Model
 
-from src.ModelsBuilder import build_alexnet, build_densetnet, build_mobilenet
+from ModelsBuilder import build_alexnet, build_densetnet, build_efficientnet, build_inception, build_mobilenet, build_xception
 
 
 MODELS_BASE_PATH = "../Models"
@@ -87,9 +87,7 @@ def load_model(model_path):
 if __name__ == "__main__":
     x_train, x_test, y_train, y_test, n_classes = split_train_test_dataset()
 
-    # model = build_alexnet(num_classes = n_classes)
-    model = load_model(f'{MODELS_BASE_PATH}/alexnet-3f4f1c10-f4ad-4fb3-ba3a-34b7e9aa5ce4.h5')
+    # model = build_xception(num_classes = n_classes)
+    model = load_model(f'{MODELS_BASE_PATH}/inception-good.h5')
 
-    train(x_train, x_test, y_train, y_test, model, model_prefix = "alexnet", epochs = 25)
-
-    
+    train(x_train, x_test, y_train, y_test, model, model_prefix = "inception", epochs = 25)

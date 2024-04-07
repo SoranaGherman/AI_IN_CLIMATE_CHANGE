@@ -118,3 +118,65 @@ def build_mobilenet(input_shape=(224, 224, 3), num_classes=13):
         layer.trainable = False
 
     return model
+
+
+def build_efficientnet(input_shape=(224, 224, 3), num_classes=13):
+    base_model = tf.keras.applications.EfficientNetB0(
+        include_top=False,
+        weights='imagenet',
+        input_shape=input_shape
+    )
+
+    for layer in base_model.layers:
+        layer.trainable = False
+
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dropout(0.5)(x)
+    predictions = Dense(num_classes, activation='softmax')(x)
+
+    model = Model(inputs=base_model.input, outputs=predictions)
+
+    return model
+
+
+def build_inception(input_shape=(224, 224, 3), num_classes=13):
+    base_model = tf.keras.applications.InceptionV3(
+        include_top=False,
+        weights='imagenet',
+        input_shape=input_shape
+    )
+
+    for layer in base_model.layers:
+        layer.trainable = False
+
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dropout(0.5)(x)
+    predictions = Dense(num_classes, activation='softmax')(x)
+
+    model = Model(inputs=base_model.input, outputs=predictions)
+
+    return model
+
+def build_xception(input_shape=(224, 224, 3), num_classes=13):
+    base_model = tf.keras.applications.Xception(
+        include_top=False,
+        weights='imagenet',
+        input_shape=input_shape
+    )
+
+    for layer in base_model.layers:
+        layer.trainable = False
+
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dropout(0.5)(x)
+    predictions = Dense(num_classes, activation='softmax')(x)
+
+    model = Model(inputs=base_model.input, outputs=predictions)
+
+    return model

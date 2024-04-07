@@ -22,7 +22,7 @@ else:
 print('[INFO] Directory root:', directory_root)
 
 default_image_size = (224, 224)  
-MAX_IMAGES = 750
+MAX_IMAGES = 500
 
 
 def convert_image_to_array(image_dir):
