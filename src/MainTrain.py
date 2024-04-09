@@ -2,7 +2,7 @@ import uuid
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-from DataProcessor import extract_dataset, normalize_set_of_images, get_label_binarizer, augument_dataset, convert_image_to_array, get_class_labels
+from DataProcessor import extract_dataset, normalize_set_of_images, get_label_binarizer, augument_dataset
 from sklearn.model_selection import train_test_split
 from keras.models import Model
 
@@ -34,25 +34,29 @@ def train(
     model: Model,
     epochs = 100,
     batch_size = 32,
-    model_prefix = "alexnet"
+    file_name = "alexnet"
 ):
-    run_id = uuid.uuid4()
-
-    model.compile(loss='categorical_crossentropy', optimizer="adam",metrics=["accuracy"]) 
+    model.compile(loss='categorical_crossentropy', optimizer=tf.keras.optimizers.Adam(), metrics=["accuracy"])
 
     model.summary()
 
     aug = augument_dataset()
-    
-    checkpoint = tf.keras.callbacks.ModelCheckpoint(f'{MODELS_BASE_PATH}/{model_prefix}-{run_id}.h5', verbose = 1, save_best_only = True)
+
+    checkpoint = tf.keras.callbacks.ModelCheckpoint(f'{MODELS_BASE_PATH}/{file_name}.h5', verbose=1, save_best_only=True)
+
+    reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.00001)
 
     print("[INFO] Training the model...")
+
+    # Set the learning rate lower
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.0005)
+    model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=["accuracy"])
 
     history = model.fit(
         aug.flow(x_train, y_train, batch_size=batch_size),
         validation_data=(x_test, y_test),
-        epochs=epochs, 
-        callbacks=[checkpoint],
+        epochs=epochs,
+        callbacks=[checkpoint, reduce_lr],
         verbose=1
     )
 
@@ -88,6 +92,6 @@ if __name__ == "__main__":
     x_train, x_test, y_train, y_test, n_classes = split_train_test_dataset()
 
     # model = build_xception(num_classes = n_classes)
-    model = load_model(f'{MODELS_BASE_PATH}/inception-good.h5')
+    model = load_model(f'{MODELS_BASE_PATH}/Good/xception-2.h5')
 
-    train(x_train, x_test, y_train, y_test, model, model_prefix = "inception", epochs = 25)
+    train(x_train, x_test, y_train, y_test, model, file_name = "xception-2", epochs = 50)
