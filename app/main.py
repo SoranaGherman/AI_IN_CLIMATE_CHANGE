@@ -91,12 +91,13 @@ if __name__ == "__main__":
         inputs = gradio.Image(sources = ["webcam"]),
         outputs = ["text", "image"],
         live = True,
-        title = "Detectare Plante Bolnave"
+        title = "Detectare Plante Bolnave",
     )
 
     app.launch(
-        ssl_keyfile = "app/key.pem",
-        ssl_certfile = "app/cert.pem",
-        ssl_verify = False
+        # ssl_keyfile = "app/key.pem",
+        # ssl_certfile = "app/cert.pem",
+        # ssl_verify = False,
+        share=True
     )
     
